@@ -1,0 +1,58 @@
+version: "3.7"
+services:
+  feed-master:
+    build: ./feed-master
+    container_name: feed-master
+    networks:
+      - feed-managment_default
+    ports:
+      - 9000:8080
+    depends_on:
+      - cache
+      - dynamodb
+
+  feed-manager:
+    build: ./feed-manager
+    container_name: feed-manager
+    networks:
+      - feed-managment_default
+    ports:
+      - 9001:8080
+  
+  feed-events:
+    build: ./feed-events
+    container_name: feed-events
+    networks:
+      - feed-managment_default
+  
+  cache:
+    image: redis:6.2-alpine
+    container_name: redis_cache
+    restart: always
+    networks:
+      - feed-managment_default
+    ports:
+      - '6300:6379'
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - cache:/data
+
+  dynamodb:
+    image: instructure/dynamo
+    container_name: dynamodb
+    networks:
+      - feed-managment_default
+    ports:
+      - "8000:8000"
+    volumes:
+      - dynamodb:/data/dynamodblocal
+
+volumes:
+  cache:
+  dynamodb:
+
+networks:
+  feed-managment_default:
+    name: feed-managment_default
+  
+
