@@ -3,6 +3,8 @@ package consumers
 import (
 	"encoding/json"
 	"feed-events/src/models"
+	"feed-events/src/services"
+
 	"log"
 
 	"github.com/IBM/sarama"
@@ -46,5 +48,5 @@ func (self *FeedConsumer) setUpConsumer(kClient sarama.Consumer) {
 func (sefl *FeedConsumer) processMessage(msg []byte) {
 	feed := &models.Feed{}
 	_ = json.Unmarshal(msg, feed)
-	log.Printf("Processing Message %+v", feed)
+	services.UpsertFeedNotify(feed)
 }

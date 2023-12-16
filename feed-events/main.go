@@ -8,6 +8,6 @@ import (
 
 func main() {
 	fmt.Println("Starting Feed Events Service !!!")
-	config.InitKakfaConfig()
+	config.Init()
 	events.Start()
 }

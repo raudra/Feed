@@ -13,7 +13,7 @@ var kafkaConfig *KafkaConfig
 
 func initBrokers() []string {
 	return []string{"kafka:9092"}
-}
+
 
 func InitKakfaConfig() {
 	kafkaConfig = &KafkaConfig{
